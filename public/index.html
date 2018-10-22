@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>White Board Studio</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" media="screen" href="./css/style.css" />
+
+	<script src="libraries/p5.js"></script>
+	<script src="libraries/p5.dom.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery.js"></script>
+	<script src="./js/whiteboard.js"></script>
+	<script src="./js/sketch.js"></script>
+
+</head>
+
+<body>
+	<div class="wrapper">
+		<!-- sidebar start -->
+		<div class="sidebar">
+			<div class="title">Main Menu</div>
+
+			<ul class="nav">
+				<!-- Nav Bar Buttons -->
+				
+				<li>
+					<div class="addthis_inline_share_toolbox"></div>
+				</li>
+				<li>
+					<button type="button" class="btn btn-primary btn-lg" id='buttonCreate'>Create a New Studio</button>
+				</li>
+				<li>
+					<button type="button" class="btn btn-primary btn-lg" id="buttonEnter">Enter a Studio</a>
+				</li>
+				<li>
+					<button type="button" class="btn btn-primary btn-lg" id="buttonSettings">Settings</a>
+				</li>
+				<li>
+					<button type="button" class="btn btn-primary btn-lg" id="buttonClose">Close Menu</a>
+				</li>
+								
+			</ul>
+			<form id="formCreate">
+				<!-- Form for Creating a Studio -->
+				<h2 class="formHeaders">Create Studio</h2>
+				<div class="container">
+					<div class="switch switch--horizontal">
+						<input id="radio-a" type="radio" name="first-switch" checked="checked" value="1" id="radioPublic"/>
+						<label for="radio-a">Public</label>
+						<input id="radio-b" type="radio" name="first-switch" value="0" id="radioPrivate"/>
+						<label for="radio-b">Private</label>
+						<span class="toggle-outside">
+							<span class="toggle-inside"></span>
+						</span>
+					</div>
+				</div>
+				<b>Studio Name: </b>
+				<input class="formField" type="text" name="studioName" id="newStudioName">
+				<b>Short Description: </b>
+				<textarea class="formField" type="text" name="studioDescription" id="newStudioDesc"></textarea>
+				<b>Password: </b>
+				<input class="formField" type="text" name="studioPassword" id="newStudioPssw">
+				<button class="formButton" type="button" id="submitNewStudio">Create Studio</button>
+			</form>
+			<!-- Form for Entering a Pre-Existing Studio -->
+			<form id="formEnter">
+				<h2 class="formHeaders">Enter Studio</h2>
+				<b>Studio Name: </b>
+				<input class="formField" type="text" name="studioName" id ="studioName">
+				<button class="formButton" type="button" id="submitEnterStudio">Enter Studio</button>
+			</form>
+			<!-- Form for Entering Settings -->
+			<form id="formSettings">
+				<h2 class="formHeaders">Settings</h2>
+				<div id="updatePsswForm">
+
+					<p>Admin access is required to adjust settings.</p>
+					<b>Password:</b>
+					<input class="formField" type="text" name="studioPassword" id="adminPssw">
+				</div>
+
+				<div id="admin">
+					<div class="container">
+						<div class="switch switch--horizontal">
+							<input id="radio-a" type="radio" name="second-switch" checked="checked" value="1" />
+							<label for="radio-a">Public</label>
+							<input id="radio-b" type="radio" name="second-switch" value="0" />
+							<label for="radio-b">Private</label>
+							<span class="toggle-outside">
+								<span class="toggle-inside"></span>
+							</span>
+						</div>
+					</div>
+					<b>Studio Name: </b>
+					<input class="formField" type="text" name="updateStudioName" id="updateStudioName">
+					<b>Short Description: </b>
+					<textarea class="formField" type="text" name="updateStudioDescription" id="updateStudioDesc"></textarea>
+					<b>Password: </b>
+					<input class="formField" type="text" name="updateStudioPassword" id="updateStudioPssw">
+				</div>
+
+
+				<button class="formButton" type="button" id="submitPssw">Submit Password</button>
+				<button class="formButton" type="button" id="submitUpdate">Submit Update</button>
+			</form>
+		</div>
+
+		<div class="content" id="contentDiv">
+			<div class="flex-container">
+				<div>
+					<span class='side-panel-toggle'>
+						<i class="fa fa-bars"></i>
+						</span>
+				</div>
+
+				<div class="siteHeading">
+					<h1 id="mainTitle">Whiteboard</h1>
+				</div>
+				
+			</div>
+			<div class="flex-container-subtext">
+				<h1 class="hoverhide">Welcome to whiteboard studio.</h1>
+				<h2 class="hoverhide">Share your drawings in real time!</h2>
+				<h2 class="hoverhide">To begin, find an exisiting studio or create a new one.</h2>
+				<h2 class="hoverhide">Use the <i class="fa fa-arrow-up" aria-hidden="true"></i> and <i class="fa fa-arrow-down" aria-hidden="true"></i> arrows to change brush sizes.</h2>
+				<h2 class="hoverhide">Use the num pad for more colors.</h2>
+				<h2 class="hoverhide">Click "m" to open the menu.</h2>
+				<h3 class="hoverhide">Resizing the page will erase your drawing.</h3>
+
+				<!-- color picker 2av bar -->
+				<div id="colorNav">
+
+					<div id="cred"></div>
+					<div id="cgreen"></div>
+					<div id="cblue"></div>
+					<div id="cblack"></div>
+					<div id="cwhite"></div>
+					<div>
+						<a href="#" class="button" id="btn-download">Download</a>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+
+	</div>
+
+	</div>
+
+
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5b60b5783b4cb53e"></script>
+
+</body>
+
+</html>
